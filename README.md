@@ -1,4 +1,4 @@
-# clonehero-maker — Cheatsheet
+# clonehero-maker - CHTM // CLONE HERO TRACK MAKER 
 
 Wirf eine Audiodatei rein, bekomme einen fertigen Clone-Hero-Songordner raus.
 
