@@ -1,0 +1,44 @@
+[package]
+name = "chtm"
+version = "0.1.0"
+edition = "2024"
+description = "Turn any audio file into a ready-to-play Clone Hero song folder"
+
+[[bin]]
+name = "clonehero-maker"
+path = "src/main.rs"
+
+[dependencies]
+# CLI
+clap = { version = "4", features = ["derive"] }
+
+# Error handling
+anyhow = "1"
+thiserror = "2"
+
+# Audio decoding for tempo/length analysis (conversion itself is done via the
+# ffmpeg CLI; see src/audio.rs).
+symphonia = { version = "0.5", features = [
+    "mp3",
+    "ogg",
+    "vorbis",
+    "flac",
+    "wav",
+    "pcm",
+    "isomp4",
+    "aac",
+    "alac",
+] }
+
+# Tag + embedded-cover reading across mp3/flac/ogg/wav.
+lofty = "0.22"
+
+# MIDI generation
+midly = "0.5"
+
+# Album art (decode embedded cover, generate placeholder, encode PNG)
+image = "0.25"
+
+[profile.release]
+opt-level = 3
+lto = true
