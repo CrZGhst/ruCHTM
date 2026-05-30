@@ -1,79 +1,83 @@
-# clonehero-maker - CHTM // CLONE HERO TRACK MAKER 
+# clonehero-maker - CHTM // CLONE HERO TRACK MAKER
 
-Wirf eine Audiodatei rein, bekomme einen fertigen Clone-Hero-Songordner raus.
+Drop in an audio file, get a fully playable Clone Hero song folder out.
 
-## Voraussetzung
+## Requirements
 
-`ffmpeg` muss installiert sein (wird zum Konvertieren nach OGG aufgerufen):
+`ffmpeg` must be installed (used to convert audio files to OGG format):
 
 ```bash
 sudo apt install ffmpeg
 ```
 
-## Bauen
+## Building
 
 ```bash
 cd chtm
 cargo build --release
-# Binary liegt dann unter: target/release/clonehero-maker
+# The binary will be located at:
+# target/release/clonehero-maker
 ```
 
-## Benutzung
+## Usage
 
 ```bash
-clonehero-maker <audiodatei> [OPTIONEN]
+clonehero-maker <audio-file> [OPTIONS]
 ```
 
-| Beispiel | Was passiert |
-|---|---|
-| `clonehero-maker song.mp3` | Ordner unter `Output/<Songname>/` |
-| `clonehero-maker "Metallica - One.mp3"` | Name aus ID3-Titel, sonst Dateiname |
-| `clonehero-maker song.flac -o ~/CloneHero/Songs` | Ausgabe in eigenen Ordner |
-| `clonehero-maker song.mp3 -d hard` | Chart bis Schwierigkeit „Hard" |
-| `clonehero-maker song.mp3 -f` | Bestehenden Ordner überschreiben |
+| Example                                          | What happens                                            |
+| ------------------------------------------------ | ------------------------------------------------------- |
+| `clonehero-maker song.mp3`                       | Creates a folder under `Output/<SongName>/`             |
+| `clonehero-maker "Metallica - One.mp3"`          | Uses the ID3 title if available, otherwise the filename |
+| `clonehero-maker song.flac -o ~/CloneHero/Songs` | Outputs to a custom directory                           |
+| `clonehero-maker song.mp3 -d hard`               | Generates charts up to "Hard" difficulty                |
+| `clonehero-maker song.mp3 -f`                    | Overwrites an existing song folder                      |
 
-## Optionen
+## Options
 
-| Flag | Kurz | Default | Bedeutung |
-|---|---|---|---|
-| `--output <DIR>` | `-o` | `Output` | Zielverzeichnis (Songordner wird darin angelegt) |
-| `--difficulty <STUFE>` | `-d` | `expert` | Höchste Schwierigkeit: `easy` / `medium` / `hard` / `expert` |
-| `--force` | `-f` | aus | Vorhandenen Songordner überschreiben |
-| `--help` | `-h` | | Hilfe anzeigen |
-| `--version` | `-V` | | Version anzeigen |
+| Flag                   | Short | Default  | Description                                                           |
+| ---------------------- | ----- | -------- | --------------------------------------------------------------------- |
+| `--output <DIR>`       | `-o`  | `Output` | Target directory (the song folder will be created inside it)          |
+| `--difficulty <LEVEL>` | `-d`  | `expert` | Highest difficulty to generate: `easy` / `medium` / `hard` / `expert` |
+| `--force`              | `-f`  | disabled | Overwrite an existing song folder                                     |
+| `--help`               | `-h`  |          | Show help                                                             |
+| `--version`            | `-V`  |          | Show version information                                              |
 
-> `--difficulty` chartet **alle Stufen bis einschließlich** der gewählten,
-> damit der Song im Spiel immer spielbar ist (`expert` = alle vier).
+> `--difficulty` generates **all difficulty levels up to and including**
+> the selected level, ensuring the song is always playable in-game
+> (`expert` = all four difficulty levels).
 
-## Eingabeformate
+## Supported Input Formats
 
 `mp3` · `wav` · `flac` · `ogg`
 
-## Was erzeugt wird
+## Generated Output
 
 ```text
 Output/
-└── <Songname>/
-    ├── song.ogg     ← konvertiertes Audio
-    ├── guitar.ogg   ← Kopie von song.ogg
-    ├── notes.mid    ← Gitarrennoten (folgen den erkannten Beats)
-    ├── song.ini     ← Metadaten (aus ID3-Tags, sonst Dateiname)
-    └── album.png    ← eingebettetes Cover oder generierter Platzhalter
+└── <SongName>/
+    ├── song.ogg     ← converted audio
+    ├── guitar.ogg   ← copy of song.ogg
+    ├── notes.mid    ← guitar note chart (based on detected beats)
+    ├── song.ini     ← metadata (from ID3 tags or filename)
+    └── album.png    ← embedded cover art or generated placeholder
 ```
 
-## In Clone Hero nutzen
+## Using in Clone Hero
 
-Den erzeugten Songordner einfach in deinen Clone-Hero-Songs-Ordner kopieren,
-z.B.:
+Simply copy the generated song folder into your Clone Hero songs directory:
 
 ```bash
-cp -r "Output/<Songname>" ~/.config/clonehero/songs/
+cp -r "Output/<SongName>" ~/.config/clonehero/songs/
 ```
 
-(Pfad je nach Installation; im Spiel ggf. **Scan Songs** ausführen.)
+(The path may vary depending on your installation. You may need to run
+**Scan Songs** inside the game afterward.)
 
-## Hinweis
+## Note
 
-Die Noten werden automatisch aus erkannten Onsets/Tempo generiert — sie folgen
-der Musik, sind aber kein handgechartetes Profi-Chart. Ziel ist: jede Datei
-lädt fehlerfrei und ist sofort spielbar.
+The note chart is automatically generated from detected onsets and tempo
+information. The notes follow the music rhythmically, but this is not a
+professionally hand-charted track. The goal is to ensure every supported
+audio file can be converted successfully and is immediately playable in
+Clone Hero.
